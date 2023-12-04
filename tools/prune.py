@@ -61,8 +61,12 @@ def collect_func_diff_weights(diff_file):
                     count += 1
                 if line.startswith("in block"):
                     # Collect basic blocks belonging to function
-                    bb_id = line.split()[5][1:-2]
-                    bbs.add(bb_id)
+                    try:
+                        bb_id = line.split()[5][1:-2]
+                        bbs.add(bb_id)
+                    except:
+                        print('diff_file has invalid "in block" line')
+                        continue
             func_counts[func_name] = count
             func_bbs[func_name] = bbs
 
