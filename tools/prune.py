@@ -55,7 +55,7 @@ def collect_func_diff_weights(diff_file):
             func_name_line = lines[0].strip().split()
             func_name = lines[0].strip().split()[2][:-1] # Remove trailing :
             bbs = set()
-            for line in lines:
+            for (i, line) in enumerate(lines):
                 line = line.strip()
                 if len(line) > 0 and line[0] == ">":
                     count += 1
@@ -65,7 +65,7 @@ def collect_func_diff_weights(diff_file):
                         bb_id = line.split()[5][1:-2]
                         bbs.add(bb_id)
                     except:
-                        print('diff_file has invalid "in block" line')
+                        logging.warning(f'diff_file has invalid "in block" at line {i}')
                         continue
             func_counts[func_name] = count
             func_bbs[func_name] = bbs
