@@ -17,13 +17,15 @@ PRUNE_SCRIPT_PATH = SCRIPT_PATH / "prune.py"
 CFLAGS = os.environ.get("CFLAGS", "-fPIC") # -fPIC required for targets like binutils
 CXXFLAGS = os.environ.get("CXXFLAGS", "-fPIC") # -fPIC required for targets like binutils
 
+IS_CPP = os.environ.get("CPP", "0") != "0"
+
 def run_cmd(cmd):
     logging.info(f" + {cmd}")
     os.system(cmd)
 
-def build_pipeline(bc_file, target_flags="@@", profiling_input_dir="in", is_cpp=False):
-    compiler = CXX_BIN if is_cpp else CC_BIN
-    cflags = CXXFLAGS if is_cpp else CFLAGS
+def build_pipeline(bc_file, target_flags="@@", profiling_input_dir="in"):
+    compiler = CXX_BIN if IS_CPP else CC_BIN
+    cflags = CXXFLAGS if IS_CPP else CFLAGS
     name = os.path.splitext(bc_file)[0]
     sanitizer = "address"
     targets_file = "targets.json"
